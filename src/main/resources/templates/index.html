@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1" name="viewport">
+    <title>SecAuth App</title>
+
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.4/css/bulma.min.css" rel="stylesheet">
+    <link crossorigin="anonymous" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" rel="stylesheet">
+
+    <link crossorigin="anonymous" href="https://use.fontawesome.com/releases/v6.0.0/css/all.css" rel="stylesheet">
+</head>
+<body>
+<section class="section">
+    <div class="container has-text-centered">
+        <div>
+            <h1 class="title">SecAuth - Editora</h1>
+            <div class="box" sec:authorize="isAuthenticated()">
+                <div class="columns">
+                    <div class="column">
+                        Olá, <strong th:text="${#authentication.principal.getAttribute('given_name')}"/> <strong
+                            th:text="${#authentication.principal.getAttribute('family_name')}"/>
+                    </div>
+                    <div class="column">
+                        <form method="post" th:action="@{/logout}">
+                            <input class="btn btn-danger" type="submit" value="Logout"/>
+                        </form>
+                    </div>
+                </div>
+
+            </div>
+            <p sec:authorize="isAuthenticated()">
+                <a class="btn btn-primary" th:href="@{/artigos/novo}"><i class="fa-regular fa-square-plus mr-2"></i>
+                    Novo Artigo</a>
+            </p>
+            <div class="columns is-centered" sec:authorize="isAuthenticated()" th:switch="${artigos}">
+                <div class="box is-centered">
+                    <h2 th:case="null">Lista de Artigos Vazia!</h2>
+                    <table class="table" th:case="*">
+                        <thead>
+                        <tr>
+                            <th>Id</th>
+                            <th>Título</th>
+                            <th>Resumo</th>
+                            <th>Publicado</th>
+                            <th>Editar</th>
+                            <th>Remover</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="artigo : ${artigos}">
+                            <td th:text="${artigo.id}"></td>
+                            <td th:text="${artigo.titulo}"></td>
+                            <td th:text="${artigo.resumo}"></td>
+                            <td>
+                                <input onclick="return false;" th:checked="${artigo.publicado}" type="checkbox"/>
+                            </td>
+                            <td><a class="btn btn-outline-primary" th:href="@{/artigos/editar/{id}(id=${artigo.id})}"><i
+                                    class="fa-regular fa-pen-to-square"></i></a></td>
+                            <td>
+                                <form method="post" th:action="@{artigos/delete/{id}(id=${artigo.id})}">
+                                    <button class="button btn-outline-danger">
+                                        <i class="fa-regular fa-rectangle-xmark"></i>
+                                    </button>
+                                </form>
+                            </td>
+
+                        </tr>
+                        </tbody>
+
+                    </table>
+                </div>
+            </div>
+            <div sec:authorize="isAnonymous()">
+                <a class="button btn-success" th:href="@{/oauth2/authorization/cognito}">Fazer Login</a>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+
+</body>
+</html>
+
+        

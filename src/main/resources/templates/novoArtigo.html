@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8">
+    <meta content="ie=edge" http-equiv="x-ua-compatible">
+    <title>Novo Artigo</title>
+    <meta content="width=device-width, initial-scale=1" name="viewport">
+    <link crossorigin="anonymous" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+          integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" rel="stylesheet">
+    <link crossorigin="anonymous" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css"
+          integrity="sha384-5sAR7xN1Nv6T6+dT2mhtzEpVJvfS3NScPQTrOxhwjIuvcA67KV2R5Jz6kr4abQsz" rel="stylesheet">
+</head>
+
+<body>
+<div class="container my-5">
+    <h3>Novo Artigo</h3>
+    <div class="card">
+        <div class="card-body">
+            <div class="col-md-8">
+                <form action="#" method="post" th:action="@{/artigos}" th:object="${artigo}">
+                    <div class="row">
+                        <div class="form-group col-md-6">
+                            <label class="col-form-label" for="titulo">Título</label> <input class="form-control"
+                                                                                             id="titulo"
+                                                                                             th:field="*{titulo}"
+                                                                                             type="text"/>
+                        </div>
+                        <div class="form-group col-md-12">
+                            <label class="col-form-label" for="resumo">Resumo</label>
+                            <textarea class="form-control" id="resumo" placeholder="Digite o Resumo (1024 caracteres)" rows="5"
+                                      th:field="*{resumo}"></textarea> <span
+                                class="text-danger" th:errors="*{titulo}" th:if="${#fields.hasErrors('titulo')}"></span>
+                        </div>
+                        <div class="form-group col-md-2">
+                            <label class="col-form-label" for="publicado">Publicado</label> <input class="form-control"
+                                                                                                   id="publicado"
+                                                                                                   th:field="*{publicado}"
+                                                                                                   type="checkbox"/>
+                        </div>
+                    </div>
+                    <div>
+                        <input class="btn btn-primary" type="submit" value="Criar Artigo">
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+
+</html>
